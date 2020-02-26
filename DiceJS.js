@@ -8,12 +8,14 @@ function RollD20Dice(){
     console.log("Hello world");
 }
 
-function PopulatePlayers(){
+function populatePlayers(){
     for (let i = 0; i < 10; i++) {
         var player = {name: "Player " + (i+1), score: 0};
         players.push(player);
     }
     console.log(players);
+    createTable();
+    
 }
 
 function RoundOneThruThree(players){
@@ -84,16 +86,31 @@ function RoundFourAndFive(players){
  function randomDiceTotal(Limit){
      return Math.floor((Math.random() * Limit)+1);
  }
+function createTable(){
+    var table = '';
+    var rows = players.length;
+    var cols = 2;
+    table += '<thead><tr><th>Player Number</th><th>Score</th></tr></thead><tbody>';
+    for (let i = 0; i < rows; i++) {
+        table += '<tr class="table-primary">';
+        table += '<td>' + players[i].name + '</td>';
+        table += '<td>' + players[i].score + '</td>';  
+        table += '</tr>';
+        
+    }
+    document.getElementById("playerTable").innerHTML =   '<table class="table-hover">' + table + '</tbody></table>';
+}
 
 
-PopulatePlayers();
-
-RoundOneThruThree(players);
-RoundOneThruThree(players);
-RoundOneThruThree(players);
-RoundFourAndFive(players);
-RoundFourAndFive(players);
-FinalRound(players);
+function startGame(){
+    populatePlayers();
+}
+// RoundOneThruThree(players);
+// RoundOneThruThree(players);
+// RoundOneThruThree(players);
+// RoundFourAndFive(players);
+// RoundFourAndFive(players);
+// FinalRound(players);
 
 
 
