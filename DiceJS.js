@@ -3,10 +3,7 @@
 var players = [];
 var rounds = 6;
 var DiceTotals = [4, 6, 8, 10, 12, 20];
-function RollD20Dice(){
-
-    console.log("Hello world");
-}
+var round = 1;
 
 function populatePlayers(){
     for (let i = 0; i < 10; i++) {
@@ -15,7 +12,7 @@ function populatePlayers(){
     }
     console.log(players);
     createTable();
-    
+    roundButton();
 }
 
 function RoundOneThruThree(players){
@@ -27,9 +24,10 @@ for (let i = 0; i < players.length; i++) {
     console.log(players);
     players.sort(function(a,b){return a.score - b.score});
     
-    players.splice(0,2);
+    var removedPlayers = players.splice(0,2);
     console.log(players);
-
+    alert(removedPlayers[0].name + ' and ' + removedPlayers[1].name + ' lost with scores of ' + removedPlayers[0].score + ' and ' + removedPlayers[1].score + ' respectively' );
+    createTable();
     
 }
 
@@ -42,8 +40,11 @@ function RoundFourAndFive(players){
         console.log(players);
         players.sort(function(a,b){return a.score - b.score});
        
-        players.shift();
+        var removedPlayers = players.shift();
         console.log(players);
+        alert(removedPlayers.name + ' lost with a score of ' + removedPlayers.score);
+        createTable();
+        
 }
  function FinalRound(players){
     var dTwentyRollsForPlayerOne = [];
@@ -61,15 +62,22 @@ function RoundFourAndFive(players){
     players[1].score = dTwentyRollsForPlayerOne[(randomDiceTotal(4))-1]
     if (players[0].score > players[1].score) {
         console.log(players[0].name + " wins!");
+        alert(players[0].name + ' has won with a score of ' + players[0].score + '!');
+        players.pop();
+        displayWinner();
     }
     else if (players[0].score == players[1].score)
     {
         console.log("Tie, repeating final round");
+        alert('Players tied with a score , close alert to automatically retry!');
         FinalRound(players);
     }
     else
     {
         console.log(players[1].name + " wins!");
+        alert(players[1].name + ' has won with a score of ' + players[1].score + '!');
+        players.shift();
+        displayWinner();
     }
 }
 
@@ -98,12 +106,37 @@ function createTable(){
         table += '</tr>';
         
     }
-    document.getElementById("playerTable").innerHTML =   '<table class="table-hover">' + table + '</tbody></table>';
+    document.getElementById("playerTable").innerHTML =   '<table class="table table-hover" align="center">' + table + '</tbody></table>';
+}
+function displayWinner(){
+    
+    document.getElementById("playerTable").innerHTML =   '<div class="container p-3 my-3 bg-dark text-white"><h4 class="text-white">'+ players[0].name + ' is the winner!</h4></div>';
 }
 
 
 function startGame(){
+    document.getElementById("jumboDissapear").style.display="none";
     populatePlayers();
+}
+function roundButton(){
+ document.getElementById("roundButton").innerHTML = '<button type="button" class="btn btn-outline-success btn-large">Round '+ round +'</button>';
+
+}
+function roundStart(){
+    if (round <4) {
+        RoundOneThruThree(players);
+        round ++;
+        roundButton();
+    }
+    else if (round >=4 && round <6) {
+        RoundFourAndFive(players);
+        round++;
+        roundButton();
+    }
+    else{
+        FinalRound(players);
+    }
+
 }
 // RoundOneThruThree(players);
 // RoundOneThruThree(players);
