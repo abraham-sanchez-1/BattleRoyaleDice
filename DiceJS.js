@@ -119,9 +119,25 @@ function startGame(){
     populatePlayers();
 }
 function roundButton(){
- document.getElementById("roundButton").innerHTML = '<button type="button" class="btn btn-outline-success btn-large">Round '+ round +'</button>';
+ document.getElementById("roundButton").innerHTML = '<button onclick="roundStart()" type="button" class="btn btn-outline-success btn-large">Round '+ round +'</button>';
 
 }
+function restartButton(){
+    
+    document.getElementById("roundButton").innerHTML = '<button onclick="restartGame()" type="button" class="btn btn-outline-info btn-large">Restart Game</button>';
+       
+       
+
+}
+function restartGame(){
+    round = 1;
+    emptyList();
+    populatePlayers();
+}
+function emptyList(){
+    players.length =0;
+}
+
 function roundStart(){
     if (round <4) {
         RoundOneThruThree(players);
@@ -135,6 +151,7 @@ function roundStart(){
     }
     else{
         FinalRound(players);
+        restartButton();
     }
 
 }
